@@ -5,7 +5,9 @@ const formulario = document.querySelector('#enviar-mail');
 //Variables for fields
 const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
-const mensaje = document.querySelector('#mensaje')
+const mensaje = document.querySelector('#mensaje');
+const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 
 //Functions
 eventListeners();
@@ -42,8 +44,6 @@ function validarFormulario(e){
     }
 
     if (e.target.type === 'email') {
-
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         
         if (re.test( e.target.value )) {
             const error = document.querySelector('p.error');
@@ -60,7 +60,11 @@ function validarFormulario(e){
         }
 
     }
-    
+    if (re.test( e.target.value )!== '' && asunto.value !== '' && mensaje.value !== '') 
+        {
+            btnEnviar.disabled = false;
+            btnEnviar.classList.remove('cursos-not-allowed','opacity-50');
+        }
 }
 
 function mostrarError(mensaje){
@@ -72,4 +76,4 @@ function mostrarError(mensaje){
     if(errores.length === 0){
         formulario.appendChild(mensajeError);
      }
-    }
+}
