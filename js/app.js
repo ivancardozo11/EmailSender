@@ -58,7 +58,9 @@ function validarFormulario(e){
             e.target.classList.add('border', 'border-red-500');
             mostrarError('Email no valido');
         }
+
     }
+    
 }
 
 function mostrarError(mensaje){
