@@ -1,7 +1,7 @@
 //Variables
 const btnEnviar = document.querySelector('#enviar');
+const btnReset = document.querySelector('#resetBtn');
 const formulario = document.querySelector('#enviar-mail');
-
 //Variables for fields
 const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
@@ -14,10 +14,16 @@ eventListeners();
 function eventListeners(){
     document.addEventListener('DOMContentLoaded', iniciarApp);
 
-    //Campo del formulario
+    //form field
     email.addEventListener('blur', validarFormulario);
     asunto.addEventListener('blur',validarFormulario);
     mensaje.addEventListener('blur', validarFormulario);
+
+    //Reinicia el formulario
+    btnReset.addEventListener('click', resetearFormulario);
+
+    //Send mail
+    formulario.addEventListener('submit', enviarMail);
 }
 
 function iniciarApp(){
@@ -60,12 +66,15 @@ function validarFormulario(e){
         }
 
     }
-    if (re.test( e.target.value )!== '' && asunto.value !== '' && mensaje.value !== '') 
+    if (re.test( e.value )!== '' && asunto.value !== '' && mensaje.value !== '') 
         {
             btnEnviar.disabled = false;
             btnEnviar.classList.remove('cursos-not-allowed','opacity-50');
         }
 }
+
+
+//Show errors
 
 function mostrarError(mensaje){
     const mensajeError = document.createElement('p');
@@ -76,4 +85,37 @@ function mostrarError(mensaje){
     if(errores.length === 0){
         formulario.appendChild(mensajeError);
      }
+}
+// Funcion que resetea el formulario  
+function resetearFormulario(e){
+    formulario.reset();
+    e.preventDefault();
+}
+
+//Sending mail
+function enviarMail(e){
+    e.preventDefault();
+
+   const spinner = document.querySelector('#spinner');
+   spinner.style.display = 'flex';
+
+   //After 3 seconds hide the spinner and show the message
+   setTimeout(()=>{
+       spinner.style.display = 'none';
+
+       //Message saying it was sent successfully
+       const parrafo = document.createElement('p')
+       parrafo.textContent = 'El mensaje se envió correctamente';
+       parrafo.classList.add('text-center', 'my-10', 'p-2', 'bg-green-500', 'text-white', 'font-bold', 'uppercase');
+       //Insert the paragraph before the spinner
+       formulario.insertBefore(parrafo, spinner);
+
+       setTimeout(()=>{
+
+        parrafo.remove(); //Eliminates the text message       
+        resetearFormulario();
+
+    }, 5000);
+   }, 3000 );
+
 }
